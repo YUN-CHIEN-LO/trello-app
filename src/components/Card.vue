@@ -4,7 +4,7 @@ import { useFocus } from '@vueuse/core';
 import { vOnClickOutside } from '@vueuse/components';
 import { useStore } from '/src/stores';
 const store = useStore();
-const { updateListTitle } = store;
+const { updateListTitle, openEditTask } = store;
 
 const props = defineProps({
   id: String,
@@ -45,7 +45,12 @@ watch(isTitleEditing, (v) => {
     ></textarea>
 
     <!-- tasks -->
-    <TaskItem v-for="task in tasks" :key="task.id" v-bind="task" />
+    <TaskItem
+      v-for="task in tasks"
+      :key="task.id"
+      v-bind="task"
+      @click="openEditTask(props.id, task.id)"
+    />
     <!-- tasks -->
 
     <!-- add new task -->
