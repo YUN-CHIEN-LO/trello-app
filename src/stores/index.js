@@ -1,4 +1,4 @@
-import { ref, computed } from 'vue';
+import { ref, watch, computed } from 'vue';
 import { defineStore } from 'pinia';
 
 // 建立亂數 id
@@ -40,7 +40,7 @@ const defaultList = [
 ];
 
 export const useStore = defineStore('store', () => {
-  const lists = ref(defaultList);
+  const lists = ref(JSON.parse(localStorage.getItem("trello-lists")) || defaultList);
 
   const updateListTitle = (cardId = '', title = '') => {
     const card = lists.value.find((list) => list.id === cardId);
@@ -100,6 +100,16 @@ export const useStore = defineStore('store', () => {
       tasks: [],
     });
   };
+
+  // 為 lists 加入 watch 監聽
+  watch(
+    lists,
+    (val) => {
+      // 當 list 變動時，將變動後的值存入 localStorage
+      localStorage.setItem('trello-lists', JSON.stringify(val));
+    },
+    { deep: true }
+  );
 
   return {
     lists,
