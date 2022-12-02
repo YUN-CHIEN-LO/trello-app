@@ -85,11 +85,21 @@ export const useStore = defineStore('store', () => {
   };
 
   // 刪除任務
-const deleteTask = (cardId, taskId) => {
-  const card = lists.value.find((list) => list.id === cardId);
-  card.tasks = card.tasks.filter((task) => task.id !== taskId);
-  closeEditTask();
- };
+  const deleteTask = (cardId, taskId) => {
+    const card = lists.value.find((list) => list.id === cardId);
+    card.tasks = card.tasks.filter((task) => task.id !== taskId);
+    closeEditTask();
+  };
+
+  // 新增卡片
+  const addNewCard = (title = '') => {
+    if (!title) return;
+    lists.value.push({
+      id: uid(),
+      title,
+      tasks: [],
+    });
+  };
 
   return {
     lists,
@@ -99,6 +109,7 @@ const deleteTask = (cardId, taskId) => {
     openEditTask,
     closeEditTask,
     updateTask,
-    deleteTask
+    deleteTask,
+    addNewCard,
   };
 });
