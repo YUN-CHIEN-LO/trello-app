@@ -1,5 +1,6 @@
 import { ref, watch, computed } from 'vue';
 import { defineStore } from 'pinia';
+import { useRouter } from "vue-router";
 
 // 建立亂數 id
 const uid = () => Math.random().toString(36).substring(2) + Date.now().toString(36);
@@ -40,6 +41,7 @@ const defaultList = [
 ];
 
 export const useStore = defineStore('store', () => {
+  const $router = useRouter();
   const lists = ref(JSON.parse(localStorage.getItem("trello-lists")) || defaultList);
 
   const updateListTitle = (cardId = '', title = '') => {
@@ -69,10 +71,13 @@ export const useStore = defineStore('store', () => {
       cardId,
       ...task,
     };
+
+    $router.push(`/task/${cardId}/${taskId}`);
   };
   // 清空 currentEditTask 代表關閉燈箱
   const closeEditTask = () => {
     currentEditTask.value = {};
+    $router.push(`/`);
   };
 
   // 更新 task 內容

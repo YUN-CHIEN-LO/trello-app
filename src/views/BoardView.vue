@@ -5,8 +5,6 @@ import draggable from 'vuedraggable';
 const store = useStore();
 const list = computed(() => store.lists);
 const toggle = ref(false);
-// 從 store 取得 currentEditTask
-const currentEditTask = computed(() => store.currentEditTask);
 </script>
 
 <template>
@@ -31,7 +29,6 @@ const currentEditTask = computed(() => store.currentEditTask);
     </div>
 
     <!-- lightbox -->
-    <!-- 判斷 currentEditTask.id 是否存在來決定燈箱顯⽰與否 -->
-    <EditBox v-if="currentEditTask?.id" />
+    <router-view />
   </div>
 </template>

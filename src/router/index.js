@@ -5,7 +5,14 @@ const router = createRouter({
   routes: [
     {
       path:"/",
-      component: () => import("/src/views/BoardView.vue")
+      component: () => import("/src/views/BoardView.vue"),
+      children: [
+        {
+        path: "task/:cardId/:taskId",
+        name: "task",
+        component: () => import("/src/views/TaskView.vue"),
+        },
+        ],
     }
   ],
 });
