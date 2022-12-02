@@ -1,6 +1,9 @@
 import { ref, computed } from 'vue';
 import { defineStore } from 'pinia';
 
+// 建立亂數 id
+const uid = () => Math.random().toString(36).substring(2) + Date.now().toString(36);
+
 const defaultList = [
   {
     id: '61bblwnux0tlb1vp3qk',
@@ -39,13 +42,27 @@ const defaultList = [
 export const useStore = defineStore('store', () => {
   const lists = ref(defaultList);
 
-  const updateListTitle = (cardId = "", title = "") => {
+  const updateListTitle = (cardId = '', title = '') => {
     const card = lists.value.find((list) => list.id === cardId);
     card.title = title;
-    };
+  };
+
+  
+  // 新增任務
+  const addTask = (cardId = '', title = '') => {
+    if (!cardId || !title) return;
+
+    const card = lists.value.find((list) => list.id === cardId);
+    card.tasks.push({
+      id: uid(),
+      title,
+      content: '',
+    });
+  };
 
   return {
     lists,
     updateListTitle,
+    addTask,
   };
 });
