@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 import { useStore } from '/src/stores';
+import draggable from 'vuedraggable';
 const store = useStore();
 const list = computed(() => store.lists);
 const toggle = ref(false);
@@ -11,15 +12,22 @@ const currentEditTask = computed(() => store.currentEditTask);
 <template>
   <div class="bg-emerald-700 h-[100vh] w-full block overflow-x-auto overflow-y-hidden">
     <div id="board-wrapper" class="h-full w-full p-4 block overflow-auto">
-      <div class="flex flex-row items-start">
-        <!-- card -->
-        <Card v-for="card in list" :key="card.id" v-bind="card" />
-        <!-- card -->
-
-        <!-- add new list -->
-        <AddNewList />
-        <!-- add new list -->
-      </div>
+      <draggable
+        :list="list"
+        group="card"
+        itemKey="id"
+        ghost-class="opacity-30"
+        class="flex flex-row items-start"
+      >
+        <!-- 原本的 Card -->
+        <template #item="{ element }">
+          <Card v-bind="element" />
+        </template>
+        <!-- AddNewCard -->
+        <template #footer>
+          <AddNewCard />
+        </template>
+      </draggable>
     </div>
 
     <!-- lightbox -->

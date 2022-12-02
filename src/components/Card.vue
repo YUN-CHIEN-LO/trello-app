@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue';
 import { useFocus } from '@vueuse/core';
 import { vOnClickOutside } from '@vueuse/components';
 import { useStore } from '/src/stores';
+import draggable from 'vuedraggable';
 const store = useStore();
 const { updateListTitle, openEditTask } = store;
 
@@ -45,12 +46,11 @@ watch(isTitleEditing, (v) => {
     ></textarea>
 
     <!-- tasks -->
-    <TaskItem
-      v-for="task in tasks"
-      :key="task.id"
-      v-bind="task"
-      @click="openEditTask(props.id, task.id)"
-    />
+    <draggable :list="tasks" group="task" itemKey="id" ghost-class="opacity-30">
+      <template #item="{ element }">
+        <TaskItem @click="openEditTask(props.id, element.id)" v-bind="element" />
+      </template>
+    </draggable>
     <!-- tasks -->
 
     <!-- add new task -->
